@@ -1,0 +1,9 @@
+name: apache_spark
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - openjdk=17
+  - pip:
+    - pyspark
