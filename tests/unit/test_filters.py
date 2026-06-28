@@ -19,21 +19,15 @@ def etl_cfg() -> ETLConfig:
     )
 
 
-def test_filter_high_severity_keeps_only_matching_rows(
-    spark: SparkSession, etl_cfg: ETLConfig
-):
+def test_filter_high_severity_keeps_only_matching_rows(spark: SparkSession, etl_cfg: ETLConfig):
     df = spark.createDataFrame([(1,), (2,), (3,), (4,)], ["Severity"])
     result = filter_high_severity(df, etl_cfg)
     assert result.count() == 2
     assert result.filter("Severity < 3").count() == 0
 
 
-def test_filter_weather_conditions_keeps_only_listed(
-    spark: SparkSession, etl_cfg: ETLConfig
-):
-    df = spark.createDataFrame(
-        [("Rain",), ("Snow",), ("Clear",), ("Fog",)], ["Weather_Condition"]
-    )
+def test_filter_weather_conditions_keeps_only_listed(spark: SparkSession, etl_cfg: ETLConfig):
+    df = spark.createDataFrame([("Rain",), ("Snow",), ("Clear",), ("Fog",)], ["Weather_Condition"])
     result = filter_weather_conditions(df, etl_cfg)
     assert result.count() == 2
     conditions = {row.Weather_Condition for row in result.collect()}
